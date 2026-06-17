@@ -1,3 +1,4 @@
+
 const express = require("express")
 const cors = require("cors")
 const bodyParser = require("body-parser")
@@ -5,12 +6,16 @@ const dotenv = require("dotenv")
 const connectDB = require("./db")
 const todoRoutes = require("./routes/todoRoutes")
 dotenv.config()
+console.log("MONGODB_URI =", process.env.MONGODB_URI)
 const { register, httpRequestDurationSeconds } = require("./utils/metrics")
 const context = require("./utils/context")
 const logger = require("./utils/logger")
 const { v4: uuidv4 } = require("uuid")
 
 const app = express();
+app.get("/", (req, res) => {
+  res.json({ message: "Todo API is running" });
+});
 app.use(cors())
 app.use(bodyParser.json())
 app.use(express.json())
