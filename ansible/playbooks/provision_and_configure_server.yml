@@ -2,8 +2,7 @@
 - name: Provision and Configure EC2 Server
   hosts: localhost
   gather_facts: false
-  vars:
-    ansible_python_interpreter: /home/mujab/todo_app/myenv/bin/python
+ 
 
   tasks:
     - name: adding SSH access to a security group
