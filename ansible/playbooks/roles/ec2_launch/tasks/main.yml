@@ -31,11 +31,11 @@
 
  - name: Launch EC2 instance
    amazon.aws.ec2_instance:
-      image_id: {{ ec2_image_id }}
-      instance_type: {{ ec2_instance_type }}
-      key_name: {{ ec2_key_name }}
-      security_group: {{ security_group_name }}
-      region: {{ aws_region }}
+      image_id: "{{ ec2_image_id }}"
+      instance_type: "{{ ec2_instance_type }}"
+      key_name: "{{ ec2_key_name }}"
+      security_group: "{{ security_group_name }}"
+      region: "{{ aws_region }}"
       state: running
       wait: true
    register: ec2_instance
