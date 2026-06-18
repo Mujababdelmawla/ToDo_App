@@ -1,3 +1,24 @@
 #SPDX-License-Identifier: MIT-0
 ---
 # vars file for ec2_launch
+aws_region: us-east-1
+ec2_instance_type: t3.micro
+ec2_image_id: ami-0b6d9d3d33ba97d99
+ec2_key_name: mujab-temp
+security_group_name: mujab-security
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
