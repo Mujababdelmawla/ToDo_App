@@ -2,6 +2,8 @@
 - name: Provision and Configure EC2 Server
   hosts: localhost
   gather_facts: false
+  vars:
+    ansible_python_interpreter: /home/mujab/todo_app/myenv/bin/python
  
 
   tasks:
@@ -51,4 +53,3 @@
     - name: Display EC2 instance info
       debug:
         msg: "Instance created successfully: {{ ec2_instance }}"
-
