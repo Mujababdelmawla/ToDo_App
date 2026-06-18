@@ -50,6 +50,5 @@
 
     - name: Display EC2 instance info
       debug:
-        msg: "Instance ID: {{ ec2_instance.instances[0].id }}"
-
+        msg: "Instance created successfully: {{ ec2_instance }}"
 
