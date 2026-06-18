@@ -1,0 +1,40 @@
+---
+- name: Provision and Configure EC2 Server
+  hosts: localhost
+  gather_facts: false
+  vars:
+    ansible_python_interpreter: /home/mujab/todo_app/myenv/bin/python
+
+  tasks:
+    - name: adding SSH access to a security group
+      amazon.aws.ec2_group:
+        name: default
+        description: security group for ansible
+        region: us-east-1
+        rules:
+          - proto: tcp
+            from_port: 3001
+            to_port: 3001
+            cidr_ip: 0.0.0.0/0
+
+          - proto: tcp
+            from_port: 22
+            to_port: 22
+            cidr_ip: 0.0.0.0/0
+
+          - proto: tcp
+            from_port: 3000
+            to_port: 3000
+            cidr_ip: 0.0.0.0/0
+
+          - proto: tcp
+            from_port: 80
+            to_port: 80
+            cidr_ip: 0.0.0.0/0
+        rules_egress:
+          - proto: all
+            cidr_ip: 0.0.0.0/0
+
+      register: security_group
+
+
