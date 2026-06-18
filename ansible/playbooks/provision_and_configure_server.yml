@@ -7,7 +7,7 @@
   tasks:
     - name: adding SSH access to a security group
       amazon.aws.ec2_group:
-        name: default
+        name: mujab-security
         description: security group for ansible
         region: us-east-1
         rules:
@@ -38,11 +38,11 @@
 
 
     - name: Launch EC2 instance
-      amazon.aws.ec2_instances:
+      amazon.aws.ec2_instance:
         image_id: ami-0b6d9d3d33ba97d99
         instance_type: t3.micro
         key_name: mujab-temp 
-        security_group: default
+        security_group: mujab-security
         region: us-east-1
         state: running
         wait: true
@@ -50,6 +50,6 @@
 
     - name: Display EC2 instance info
       debug:
-        msg: "Instance ID: {{ ec2_instance.instances[0].instance_id }}"
+        msg: "Instance ID: {{ ec2_instance.instance.id }}"
 
 
