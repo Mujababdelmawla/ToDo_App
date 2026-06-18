@@ -43,7 +43,27 @@
  - name: Display EC2 instance info
    debug:
       msg: "Instance created successfully: {{ ec2_instance }}"
-  
- 
 
-  
+ - name: waiting for the instance to be ready 
+   wait_for:
+      host: "{{ ec2_instance.instances[0].public_dns_name }}"
+      port: 22
+      delay: 30
+      timeout: 300
+      state: started
+   when: ec2_instance is defined and ec2_instance.instances | length > 0 # this condition ensures that the wait_for task is only executed if the ec2_instance variable is defined and contains at least one instance.
+
+ - name: add the ec2 instance to the inventory dynamically
+   add_host:
+      name: "{{ ec2_instance.instances[0].public_dns_name }}"
+      groups: launched_ec2_instances
+      ansible_user: ubuntu
+      ansible_ssh_private_key_file: "{{ EC2_SSH_PRIVATE_KEY_PATH }}"
+
+ - name: debug dynamic inventory
+   debug:
+      var: groups['launched_ec2_instances']
+
+ - name: debug ssh private key path
+   debug:
+      var: EC2_SSH_PRIVATE_KEY_PATH
