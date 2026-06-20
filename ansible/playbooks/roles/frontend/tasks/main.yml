@@ -12,4 +12,3 @@
   command: npm run build
   args:
     chdir: /opt/todo-app/todo-frontend
-
