@@ -5,6 +5,7 @@ const bodyParser = require("body-parser")
 const dotenv = require("dotenv")
 const connectDB = require("./db")
 const todoRoutes = require("./routes/todoRoutes")
+const path = require("path")
 dotenv.config()
 console.log("MONGODB_URI =", process.env.MONGODB_URI)
 const { register, httpRequestDurationSeconds } = require("./utils/metrics")
@@ -56,6 +57,10 @@ app.use('/api', todoRoutes)
 
 connectDB()
 
+app.use(express.static(path.join(__dirname, 'todo-frontend/build', 'public')));
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'todo-frontend/build', 'index.html'));
+});
 app.get('/metrics', async(req,res) =>{
     res.set('Content-Type', register.contentType)
     res.end(await register.metrics())

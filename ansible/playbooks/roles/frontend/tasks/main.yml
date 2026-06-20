@@ -1,3 +1,15 @@
 #SPDX-License-Identifier: MIT-0
 ---
 # tasks file for frontend
+- name: install frontend dependencies
+  become: true
+  npm:
+    path: /opt/todo-app/todo-frontend
+    state: present
+
+- name: build frontend
+  become: true
+  command: npm run build
+  args:
+    chdir: /opt/todo-app/todo-frontend
+
