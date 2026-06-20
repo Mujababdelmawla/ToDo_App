@@ -1,3 +1,47 @@
 #SPDX-License-Identifier: MIT-0
 ---
 # tasks file for backend
+- name: install backend dependencies
+  become: true
+  npm:
+    path: /opt/todo-app/todo-backend
+    state: present
+
+
+- name: install backend pm2
+  become: true
+  npm: # install pm2 globally to manage the backend process
+    name: pm2
+    global: yes
+    state: present
+
+- name: check if start.js exists
+  stat:
+    path: /opt/todo-app/todo-backend/start.js
+  register: start_js
+
+- name: debugging start.js existence
+  debug:
+    msg: "start.js exists: {{ start_js.stat.exists }}"
+
+- name: check the pm2 process list
+  become: true
+  command: pm2 list
+  register: pm2_process_list
+  changed_when: false
+
+- name: debugging pm2 process list
+  debug:
+    var: pm2_process_list.stdout_lines
+
+
+- name: start or restart the backend with pm2
+  become: true
+  command: pm2 start /opt/todo-app/todo-backend/start.js --name todo-backend --watch
+  when: start_js.stat.exists
+
+- name: set pm2 to start on boot
+  become: true
+  command: pm2 startup systemd -u {{ ansible_user }} --hp /home/{{ ansible_user }}
+  register: pm2_startup
+  changed_when: false
