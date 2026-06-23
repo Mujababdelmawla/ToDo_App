@@ -1,0 +1,38 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for mongodb
+
+- name: Import MongoDB GPG key
+  become: true
+  apt_key:
+    url: https://www.mongodb.org/static/pgp/server-6.0.asc
+    state: present
+
+- name: Add MongoDB repository
+  become: true
+  apt_repository:
+    repo: "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/6.0 multiverse"
+    state: present
+
+- name: Install MongoDB
+  become: true
+  package:
+    name: mongodb-org
+    state: present
+
+- name: Start MongoDB service
+  become: true
+  service:
+    name: mongod
+    state: started
+    enabled: true
+
+- name: Wait for MongoDB to be ready
+  wait_for:
+    port: 27017
+    delay: 5
+    timeout: 30
+
+- name: Debug MongoDB status
+  debug:
+    msg: "MongoDB started successfully on port 27017"
