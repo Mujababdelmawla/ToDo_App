@@ -4,10 +4,10 @@
 
 - name: Download MongoDB GPG key
   become: true
-  ansible.builtin.get_url:
-    url: https://www.mongodb.org/static/pgp/server-6.0.asc
-    dest: /usr/share/keyrings/mongodb-server-6.0.gpg
-    mode: '0644'
+  shell: |
+    curl -fsSL https://www.mongodb.org/static/pgp/server-6.0.asc | gpg --dearmor > /usr/share/keyrings/mongodb-server-6.0.gpg
+  args:
+    warn: false
 
 - name: Add MongoDB repository with GPG key
   become: true
