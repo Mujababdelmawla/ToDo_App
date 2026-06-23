@@ -2,17 +2,25 @@
 ---
 # tasks file for mongodb
 
-- name: Import MongoDB GPG key
+- name: Download MongoDB GPG key
   become: true
-  apt_key:
+  ansible.builtin.get_url:
     url: https://www.mongodb.org/static/pgp/server-6.0.asc
+    dest: /usr/share/keyrings/mongodb-server-6.0.gpg
+    mode: '0644'
+
+- name: Add MongoDB repository with GPG key
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/apt/sources.list.d/mongodb-org-6.0.list
+    line: "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-6.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/6.0 multiverse"
+    create: yes
     state: present
 
-- name: Add MongoDB repository
+- name: Update apt cache
   become: true
-  apt_repository:
-    repo: "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/6.0 multiverse"
-    state: present
+  apt:
+    update_cache: yes
 
 - name: Install MongoDB
   become: true
