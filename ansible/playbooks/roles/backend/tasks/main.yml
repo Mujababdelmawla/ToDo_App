@@ -10,7 +10,7 @@
 
 - name: install backend pm2
   become: true
-  npm: # install pm2 globally to manage the backend process
+  npm: # install pm2 globally to manage the backend process it  make sure that the backend process is running and can be restarted if it crashes
     name: pm2
     global: yes
     state: present
